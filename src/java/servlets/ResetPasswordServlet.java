@@ -23,6 +23,9 @@ public class ResetPasswordServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
+        String uuid = request.getParameter("uuid");
+        request.setAttribute("uuid", uuid);
+        
         getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
     } 
 
@@ -30,12 +33,32 @@ public class ResetPasswordServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
+        String uuid = request.getParameter("uuid");
         String email = request.getParameter("email");
         String path = getServletContext().getRealPath("/WEB-INF");
         
         AccountService accServ = new AccountService();
-        String url = request.getRequestURL().toString();
-        accServ.resetPassword(email, path, url);
+        
+        if (uuid != null) {
+           accServ = new AccountService();
+           String password = request.getParameter("password");
+           if(accServ.changePassword(uuid, password)) {
+               request.setAttribute("message", "Password reseted, please login");
+               getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+               return;
+           }
+           request.setAttribute("message", "Failed to reset password. Try again");
+           getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
+           return;
+        }
+
+        if (email != null && !email.isEmpty()) {
+            String url = request.getRequestURL().toString();
+            accServ.resetPassword(email, path, url);
+            request.setAttribute("message", "Please, check your e-mail for reset instructions");
+        } else {
+            request.setAttribute("message", "Enter a valid email");
+        }
         
         getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
     }

@@ -42,6 +42,7 @@ public class AccountService {
 
         String uuid = UUID.randomUUID().toString();
         user.setResetPasswordUuid(uuid);
+        userDB.update(user);
 
         String to = user.getEmail();
         String subject = "Notes App - Reset Password";
@@ -60,5 +61,19 @@ public class AccountService {
         }
     }
     
-    
+    public boolean changePassword(String uuid, String password) {
+        UserDB userDB = new UserDB();
+
+        try {
+            User user = userDB.getByUUID(uuid);
+            user.setPassword(password);
+            System.out.println(user.getPassword());
+            user.setResetPasswordUuid(null);
+            userDB.update(user);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
 }
