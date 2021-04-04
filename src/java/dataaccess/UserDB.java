@@ -24,6 +24,8 @@ public class UserDB {
             User user = em.createNamedQuery("User.findByResetPasswordUuid", User.class)
                     .setParameter("resetPasswordUuid", uuid).getSingleResult();
             return user;
+        } catch (Exception ex) {
+            return null;
         } finally {
             em.close();
         }

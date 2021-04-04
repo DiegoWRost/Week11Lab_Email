@@ -1,7 +1,6 @@
 package services;
 
 import dataaccess.UserDB;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;

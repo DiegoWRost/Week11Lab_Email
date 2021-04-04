@@ -14,6 +14,6 @@
             <input type="submit" value="Sign in">
         </form>
         <p><a href="reset">Forgot password</a></p>
-        <p>${message}</p>
+        <strong><p>${message}</p></strong>
     </body>
 </html>

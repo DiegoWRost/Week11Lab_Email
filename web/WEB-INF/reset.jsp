@@ -13,7 +13,7 @@
         <title>Reset Password</title>
     </head>
     <body>
-        <c:if test="${uuid == null}">
+        <c:if test="${uuid == null || user == null}">
             <h1>Reset Password</h1>
             <p>Please enter your email address to reset your password.</p>
             <form action="reset" method="post">
@@ -21,7 +21,7 @@
                 <input type="submit" value="Submit">
             </form>
         </c:if>
-        <c:if test="${uuid != null}">
+        <c:if test="${uuid != null && user != null}">
             <h1>Enter a new password</h1>
             <form action="reset" method="post">
                 Password: <input type="password" name="password">
@@ -29,6 +29,6 @@
                 <input type="submit" value="Submit">
             </form>
         </c:if>
-        <p>${message}</p>
+        <strong><p>${message}</p></strong>
     </body>
 </html>

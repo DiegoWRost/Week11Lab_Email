@@ -6,11 +6,13 @@
 
 package servlets;
 
+import dataaccess.UserDB;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.User;
 import services.AccountService;
 
 /**
@@ -25,6 +27,14 @@ public class ResetPasswordServlet extends HttpServlet {
         
         String uuid = request.getParameter("uuid");
         request.setAttribute("uuid", uuid);
+        
+        UserDB userDB = new UserDB();
+        User user = userDB.getByUUID(uuid);
+        request.setAttribute("user", user);
+        
+        if (uuid != null && !uuid.isEmpty() && user == null) {
+             request.setAttribute("message", "Invalid UUID");
+        }
         
         getServletContext().getRequestDispatcher("/WEB-INF/reset.jsp").forward(request, response);
     } 
