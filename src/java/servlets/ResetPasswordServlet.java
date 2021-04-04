@@ -48,8 +48,10 @@ public class ResetPasswordServlet extends HttpServlet {
         String path = getServletContext().getRealPath("/WEB-INF");
         
         AccountService accServ = new AccountService();
+        UserDB userDB = new UserDB();
+        User user = userDB.getByUUID(uuid);
         
-        if (uuid != null) {
+        if (uuid != null && user != null) {
            accServ = new AccountService();
            String password = request.getParameter("password");
            if(accServ.changePassword(uuid, password)) {
